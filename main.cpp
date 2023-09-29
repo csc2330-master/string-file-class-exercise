@@ -1,19 +1,35 @@
 #include <iostream>
 #include <string>
+#include <fstream>
 
 using std::string;
 using std::cout;
 using std::cin;
 using std::endl;
+using std::cerr;
 using std::stoi;
+
+using std::ifstream;
 
 int GetSalary(const string& record);
 char GetSex(const string& record);
 
 int main() {
-    string record = "10001,9/2/53,Georgi,Facello,M,6/26/86,24916";
-    int salary = GetSalary(record);
-    cout << salary << endl;
+    string record, filename;
+    cout << "Filename: ";
+    cin >> filename;
+    ifstream file(filename);
+    if (!file.is_open()){
+        cerr << "Error opening file " << filename << endl;
+        return 1;
+    }
+    int recordCount = 0;
+    while (getline(file, record)){
+        cout << record << endl;
+        recordCount++;
+    }
+    cout << recordCount << " read" << endl << endl;
+    file.close();
     return 0;
 }
 
@@ -22,7 +38,18 @@ int GetSalary(const string& record) {
     return stoi(salaryText);
 }
 char GetSex(const string& record){
+    size_t start = 0, position = record.find(',');
+    char sex;
+    for (int i = 0; i < 3 && position != string::npos; ++i) {
+        start = position + 1;
+        position = record.find(',', start);
 
+    }
+    if (record[position + 1] == 'M')
+        sex = 'm';
+    else
+        sex = 'f';
+    return sex;
 }
 
 //size_t position = record.find(',');
