@@ -23,12 +23,28 @@ int main() {
         cerr << "Error opening file " << filename << endl;
         return 1;
     }
-    int recordCount = 0;
+    getline(file, record);
+    double sum = 0.0, sumMale = 0.0, sumFemale = 0.0;
+    int recordCount = 0, maleCount = 0, femaleCount = 0;
+    double salary;
+    char sex;
     while (getline(file, record)){
-        cout << record << endl;
+        salary = GetSalary(record);
+        sex = GetSex(record);
+        sum += salary;
+        if (sex == 'm'){
+            sumMale += salary;
+            maleCount++;
+        }else{
+            sumFemale += salary;
+            femaleCount++;
+        }
         recordCount++;
     }
     cout << recordCount << " read" << endl << endl;
+    cout << "Salary Average = " << sum / recordCount << endl;
+    cout << "Male Average   = " << sumMale / maleCount << endl;
+    cout << "Female Average = " << sumFemale / femaleCount << endl;
     file.close();
     return 0;
 }
